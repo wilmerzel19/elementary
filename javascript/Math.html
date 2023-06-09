@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aplicación de Preguntas</title>
+</head>
+<body>
+  <h1>Aplicación de Preguntas</h1>
+
+  <div id="question-container">
+    <p id="question"></p>
+    <ul id="choices"></ul>
+  </div>
+
+  <button id="submit-btn">Enviar respuesta</button>
+
+  <div id="score-container">
+    <h2>Tu puntaje:</h2>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    // Array de preguntas y respuestas
+    var questions = [
+      {
+        question: "¿Cuál es la capital de Francia?",
+        choices: ["Londres", "París", "Madrid", "Berlín"],
+        correctAnswer: 1
+      },
+      {
+        question: "¿En qué año se descubrió América?",
+        choices: ["1492", "1776", "1812", "1955"],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Cuál es el símbolo químico del agua?",
+        choices: ["O", "H2O", "CO2", "NaCl"],
+        correctAnswer: 1
+      }
+    ];
+
+    var currentQuestion = 0;
+    var score = 0;
+
+    var questionElement = document.getElementById("question");
+    var choicesElement = document.getElementById("choices");
+    var scoreElement = document.getElementById("score");
+    var submitButton = document.getElementById("submit-btn");
+
+    function showQuestion() {
+      var question = questions[currentQuestion];
+      questionElement.textContent = question.question;
+
+      // Limpiar las opciones anteriores
+      choicesElement.innerHTML = "";
+
+      // Crear las opciones de respuesta
+      for (var i = 0; i < question.choices.length; i++) {
+        var choice = document.createElement("li");
+        choice.textContent = question.choices[i];
+        choice.dataset.choiceIndex = i;
+        choicesElement.appendChild(choice);
+      }
+    }
+
+    function checkAnswer(selectedIndex) {
+      var question = questions[currentQuestion];
+      if (selectedIndex === question.correctAnswer) {
+        score++;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      questionElement.style.display = "none";
+      choicesElement.style.display = "none";
+      submitButton.style.display = "none";
+
+      scoreElement.textContent = score + " de " + questions.length;
+      scoreElement.style.display = "block";
+    }
+
+    // Evento de clic en las opciones de respuesta
+    choicesElement.addEventListener("click", function(event) {
+      if (event.target.matches("li")) {
+        var selectedIndex = parseInt(event.target.dataset.choiceIndex, 10);
+        checkAnswer(selectedIndex);
+      }
+    });
+
+    // Evento de clic en el botón de enviar respuesta
+    submitButton.addEventListener("click", function() {
+      var selectedChoice = choicesElement.querySelector(".selected");
+      if (selectedChoice) {
+        var selectedIndex = parseInt(selectedChoice.dataset.choiceIndex, 10);
+        checkAnswer(selectedIndex);
+      }
+    });
+
+    // Mostrar la primera pregunta
+    showQuestion();
+  </script>
+</body>
+</html>

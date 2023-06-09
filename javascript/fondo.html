@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicación de preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        #quiz-container {
+            margin-top: 50px;
+        }
+
+        #options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #options li {
+            margin: 10px 0;
+        }
+
+        #submit-btn {
+            margin-top: 20px;
+        }
+
+        #result-container {
+            display: none;
+            margin-top: 50px;
+        }
+
+        #restart-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aplicación de preguntas</h1>
+
+    <div id="quiz-container">
+        <h2 id="question"></h2>
+        <ul id="options">
+            <li><input type="radio" name="choice" value="1" id="option1"><label for="option1" id="option1-label"></label></li>
+            <li><input type="radio" name="choice" value="2" id="option2"><label for="option2" id="option2-label"></label></li>
+            <li><input type="radio" name="choice" value="3" id="option3"><label for="option3" id="option3-label"></label></li>
+            <li><input type="radio" name="choice" value="4" id="option4"><label for="option4" id="option4-label"></label></li>
+        </ul>
+        <button id="submit-btn">Siguiente</button>
+    </div>
+
+    <div id="result-container">
+        <h2 id="result"></h2>
+        <button id="restart-btn">Reiniciar</button>
+    </div>
+
+    <script>
+        // Definir las preguntas y respuestas
+        const questions = [
+            {
+                question: "¿Cuál es la capital de Francia?",
+                options: ["París", "Londres", "Madrid", "Berlín"],
+                answer: 1
+            },
+            {
+                question: "¿Cuál es el río más largo del mundo?",
+                options: ["Amazonas", "Nilo", "Yangtsé", "Mississippi"],
+                answer: 0
+            },
+            // ... agregar más preguntas aquí
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        // Obtener elementos del DOM
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const resultElement = document.getElementById("result");
+        const submitButton = document.getElementById("submit-btn");
+        const restartButton = document.getElementById("restart-btn");
+
+        // Función para cargar la pregunta actual
+        function loadQuestion() {
+            const current = questions[currentQuestion];
+            questionElement.textContent = current.question;
+            optionsElement.innerHTML = "";
+
+            for (let i = 0; i < current.options.length; i++) {
+                const li = document.createElement("li");
+                const radio = document.createElement("input");
+                const label = document.createElement("label");
+                radio.type = "radio";
+                radio.name = "choice";
+                radio.value = i;
+                radio.id = "option" + (i + 1);
+                label.htmlFor = "option" + (i + 1);
+                label.textContent = current.options[i];
+                li.appendChild(radio);
+                li.appendChild(label);
+                optionsElement.appendChild(li);
+            }
+        }
+
+        // Función para comprobar la respuesta
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="choice"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                if (answer === questions[currentQuestion].answer) {
+                    score++;
+                }
+                currentQuestion++;
+                selectedOption.checked = false;
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            }
+        }
+
+        // Función para mostrar el resultado
+        function showResult() {
+            questionElement.style.display = "none";
+            optionsElement.style.display = "none";
+            submitButton.style.display = "none";
+            resultElement.textContent = "Obtuviste " + score + " de " + questions.length + " preguntas correctas.";
+            resultElement.style.display = "block";
+            restartButton.style.display = "block";
+        }
+
+        // Función para reiniciar la aplicación
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            questionElement.style.display = "block";
+            optionsElement.style.display = "block";
+            submitButton.style.display = "block";
+            resultElement.style.display = "none";
+            restartButton.style.display = "none";
+            loadQuestion();
+        }
+
+        // Cargar la primera pregunta al cargar la página
+        window.addEventListener("load", loadQuestion);
+
+        // Agregar eventos a los botones
+        submitButton.addEventListener("click", checkAnswer);
+        restartButton.addEventListener("click", restartQuiz);
+    </script>
+</body>
+</html>
+

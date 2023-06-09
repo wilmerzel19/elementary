@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicación de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .btn-submit {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aplicación de Preguntas</h1>
+
+    <div id="quiz">
+        <div class="question">1. ¿Cuál es la capital de Francia?</div>
+        <div class="options">
+            <input type="radio" name="q1" value="a"> a) París<br>
+            <input type="radio" name="q1" value="b"> b) Madrid<br>
+            <input type="radio" name="q1" value="c"> c) Roma<br>
+            <input type="radio" name="q1" value="d"> d) Londres<br>
+        </div>
+
+        <div class="question">2. ¿Cuál es el río más largo del mundo?</div>
+        <div class="options">
+            <input type="radio" name="q2" value="a"> a) Amazonas<br>
+            <input type="radio" name="q2" value="b"> b) Nilo<br>
+            <input type="radio" name="q2" value="c"> c) Yangtsé<br>
+            <input type="radio" name="q2" value="d"> d) Misisipi<br>
+        </div>
+
+        <button class="btn-submit" onclick="showResult()">Enviar respuestas</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function showResult() {
+            var q1 = document.querySelector('input[name="q1"]:checked');
+            var q2 = document.querySelector('input[name="q2"]:checked');
+
+            if (q1 && q2) {
+                var score = 0;
+
+                if (q1.value === "a") {
+                    score++;
+                }
+                if (q2.value === "b") {
+                    score++;
+                }
+
+                var result = document.getElementById("result");
+                result.innerHTML = "Has obtenido " + score + " respuestas correctas de 2.";
+            } else {
+                alert("Por favor, responde todas las preguntas antes de enviar.");
+            }
+        }
+    </script>
+</body>
+</html>
